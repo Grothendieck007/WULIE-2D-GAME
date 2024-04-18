@@ -1,11 +1,21 @@
 extends Node
 
+var speed_effect
+var item
+var selected_item: String
 
-# Called when the node enters the scene tree for the first time.
+# 定义效果名称和对应的方法
+var effect_methods = {
+	"item1":"apply_speed_effect",
+	"item2":""
+	# 添加其他效果...
+}
+
 func _ready():
-	pass # Replace with function body.
+	# 获取节点
+	speed_effect = $SpeedEffect
+	item = $".."
+	selected_item = item.selected_item
+	
+	print("选中的道具：", selected_item)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

@@ -1,4 +1,6 @@
 extends Node
+#效果编号
+@export var effect_index: int = 1
 #速度乘数
 @export var speed_multiplier: float = 1.0
 #速度效果生效时间
