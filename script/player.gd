@@ -2,6 +2,7 @@ extends Node2D
 signal hit
 
 @export var speed = 400 # @导出变量速度= 400 #
+var speed_multiplier: float = 1
 var screen_size # 游戏窗口的大小。
 
 func _ready():
@@ -21,7 +22,7 @@ func _process(delta):
 		velocity.y -= 1
 
 	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+		velocity = velocity.normalized() * speed * speed_multiplier
 		$Area2D/AnimatedSprite2D.play() 
 		# $ 是 get_node() 的简写。
 		# 因此在上面的代码中，$AnimatedSprite2D.play() 与 get_node("AnimatedSprite2D").play() 相同。

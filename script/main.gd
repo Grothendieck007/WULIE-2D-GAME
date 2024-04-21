@@ -3,11 +3,12 @@ extends Node
 # 使用 @export var mob_scene: PackedScene 来允许我们选择要实例化的 Mob 场景
 @export var mob_scene: PackedScene
 # 初始概率为 10%
-@export var initialItemSpawnProbability: float = 0.1
+@export var initialItemSpawnProbability: float = 0.5
 
 var score
 # 将 itemSpawnProbability 的初始值设置为一个变量
-var itemSpawnProbability: float = initialItemSpawnProbability
+@export var itemSpawnProbability: float = 0.5
+
 # 当节点第一次进入场景树时调用。
 func _ready():
 	pass
