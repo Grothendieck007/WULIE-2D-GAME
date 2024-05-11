@@ -9,37 +9,51 @@ func _ready():
 	# 查看游戏窗口大小
 	screen_size = get_viewport_rect().size
 	hide()
+	$Area2D/PlayerAnimatedSprite2D/SpeedEffectParticles2D.hide()
 
 func _process(delta):
-	var velocity = Vector2.ZERO # 玩家的运动矢量。
+	# 玩家的运动矢量
+	var velocity = Vector2.ZERO
+	
+	var speed_effect_particles2d = $Area2D/PlayerAnimatedSprite2D/SpeedEffectParticles2D
+	var player_animated_sprite2d = $Area2D/PlayerAnimatedSprite2D
+	
 	if Input.is_action_pressed("move_right"):
 		velocity.x += 1
+		# 通过修改重力的x，y值改变尾迹方向
+		speed_effect_particles2d.gravity.x = -90
 	if Input.is_action_pressed("move_left"):
 		velocity.x -= 1
+		speed_effect_particles2d.gravity.x = 90
 	if Input.is_action_pressed("move_down"):
 		velocity.y += 1
+		speed_effect_particles2d.gravity.y = -100
 	if Input.is_action_pressed("move_up"):
 		velocity.y -= 1
+		speed_effect_particles2d.gravity.y = 100
 
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed * speed_multiplier
-		$Area2D/AnimatedSprite2D.play() 
+		player_animated_sprite2d.play() 
 		# $ 是 get_node() 的简写。
 		# 因此在上面的代码中，$AnimatedSprite2D.play() 与 get_node("AnimatedSprite2D").play() 相同。
 	else:
-		$Area2D/AnimatedSprite2D.stop()
+		player_animated_sprite2d.stop()
+		speed_effect_particles2d.gravity.x = 0
 
 	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size) # clamp 一个值意味着将其限制在给定范围内
+	# clamp 一个值意味着将其限制在给定范围内
+	position = position.clamp(Vector2.ZERO, screen_size) 
 	
 	if velocity.x != 0:
-		$Area2D/AnimatedSprite2D.animation = "walk"
-		$Area2D/AnimatedSprite2D.flip_v = false # 使用 flip_h 属性将这个动画进行水平翻转
-		# See the note below about boolean assignment.
-		$Area2D/AnimatedSprite2D.flip_h = velocity.x < 0
+		player_animated_sprite2d.animation = "walk"
+		# 布尔值flip_v 如果为 true，纹理将被垂直翻转。
+		player_animated_sprite2d.flip_v = false 
+		# 布尔值flip_h 如果为 true，纹理将被水平翻转。
+		player_animated_sprite2d.flip_h = velocity.x < 0
 	elif velocity.y != 0:
-		$Area2D/AnimatedSprite2D.animation = "up"
-		$Area2D/AnimatedSprite2D.flip_v = velocity.y > 0
+		player_animated_sprite2d.animation = "up"
+		player_animated_sprite2d.flip_v = velocity.y > 0
 
 
 
