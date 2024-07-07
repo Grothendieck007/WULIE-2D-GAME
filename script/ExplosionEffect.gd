@@ -36,14 +36,16 @@ func apply_effect():
 
 
 
-func _on_area_2d_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+@warning_ignore("unused_parameter")
+func _on_area_2d_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int):
 	if body.is_in_group("mob"):
 		body.queue_free()
 	
 	
 
 
-func _on_area_2d_area_shape_entered(area_rid, area, area_shape_index, local_shape_index):
+@warning_ignore("unused_parameter")
+func _on_area_2d_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int):
 	var parent
 	parent = area.get_parent()
 	if parent.is_in_group("item"):

@@ -12,10 +12,12 @@ extends Node
 #得分
 var score
 
+# 道具生成系统
+var item_generation_system
 
 # 当节点第一次进入场景树时调用。
 func _ready():
-	pass
+	item_generation_system = $ItemGenerationSystem
 
 func game_over():
 	$ScoreTimer.stop()
@@ -28,7 +30,6 @@ func game_over():
 func new_game():
 	score = 0
 	$Player.start($StartPosition.position)
-	print("StartTimer.start")
 	$StartTimer.start()
 	$ItemTimer.start()
 	$HUD.update_score(score)
@@ -41,7 +42,6 @@ func _on_score_timer_timeout():
 	$HUD.update_score(score)
 
 func _on_start_timer_timeout():
-	print("start_timer_timeout")
 	$MobTimer.start()
 	$ScoreTimer.start()
 
@@ -100,19 +100,13 @@ func generateAndSpawnItem():
 	# 生成随机坐标
 	var rectPosition = Vector2(0, 0)  # 矩形的左上角位置
 	var rectSize = Vector2(480, 720)  # 矩形的大小
-	var item_position = generateRandomCoordinateInRect(rectPosition, rectSize)
 	
-	# 实例化 Item 场景
-	var ItemScene = preload("res://scene/item.tscn").instantiate() 
+	# 传入道具位置
+	item_generation_system.item_position = generateRandomCoordinateInRect(rectPosition, rectSize)
+	print("item_generation_system.item_position = ",item_generation_system.item_position)
 	
-	# 设置 Item 的位置为随机坐标
-	ItemScene.position = item_position
-	
-	ItemScene.add_to_group("item")
-	
-	# 将 Item 添加到场景中
-	add_child(ItemScene)
-	
+	# 调用方法生成道具
+	item_generation_system.generation_item()
 
 # 在ItemTimer 计时结束时进行概率运算
 func _on_item_timer_timeout():
